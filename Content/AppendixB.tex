@@ -1,10 +1,19 @@
-\chapter{Τίτλος δεύτερου παραρτήματος}
-\label{app:SecondAppendix}
-
-\section{Τίτλος πρώτης ενότητας}
-\label{sec:FirstSection}
-Εδώ είναι ο χώρος της πρώτης ενότητας του δεύτερου Παραρτήματος.
-
-\section{Τίτλος δεύτερης ενότητας}
-\label{sec:SecondSection}
-Εδώ είναι ο χώρος της δεύτερης ενότητας του δεύτερου Παραρτήματος.
+\chapter{Η σύνταξη της μεταβλητής περιβάλλοντος OMP\_PLACES}
+\label{app:OMP_Places syntax}
+Το σύνολο των έγκυρων τιμών που μπορούν να ανατεθούν στη μεταβλητή \texttt{OMP\_PLACES} σύμφωνα με το OpenMP 5.1 \cite{openmp51} προκύπτουν βάσει των ακόλουθων συντακτικών κανόνων:
+\begin{verbatim}
+	<list>         |= <p-list> | <aname>
+	<p-list>       |= <p-interval> | <p-list>,<p-interval>
+	<p-interval>   |= <place>:<len>:<stride> | <place>:<len> | <place> | !<place>
+	<place>        |= {<res-list>} | <res>
+	<res-list>     |= <res-interval> | <res-list>,<res-interval>
+	<res-interval> |= <res>:<num-places>:<stride> | <res>:<num-places> | <res>
+	                  | !<res>
+	<aname>        |= <word>(<num-places>) | <word>
+	<word>         |= sockets | cores | ll_caches | numa_domains | threads
+	                  | <implementation-defined abstract name>
+	<res>          |= non-negative integer
+	<num-places>   |= positive integer
+	<stride>       |= integer
+	<len>          |= positive integer
+\end{verbatim}
