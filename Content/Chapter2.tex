@@ -1,4 +1,4 @@
-\chapter{Η διεπαφή προγραμματισμού OpenMP}
+\chapter{Η διεπαφή προγραμματισμού εφαρμογών OpenMP}
 \label{ch:OpenMP API}
 
 \section{Εισαγωγή στο OpenMP}
@@ -156,6 +156,7 @@ To OpenMP αποτελείται από:
 Στην περίπτωση των πολιτικών \texttt{auto} και \texttt{runtime} απαγορεύεται ο προσδιορισμός τιμής \texttt{chunk\_size}.
 
 \subsection{Η οδηγία task}
+\label{ssec:task directive}
 Η οδηγία αυτή ορίζει μία εργασία προς εκτέλεση και συντάσσεται ως εξής:
 \begin{quote}
 	\texttt{\textbf{\#pragma omp task} \textit{[clause [[,] clause] ... ] <new-line>}} \\
