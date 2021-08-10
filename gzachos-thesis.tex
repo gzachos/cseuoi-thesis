@@ -18,6 +18,32 @@
 % Πακέτο για τη διατήρηση των floats (εικόνες κ.α.) εντός των ενοτήτων
 \usepackage[section]{placeins}
 
+%
+\usepackage{listings}
+
+\lstset{
+	language=C,
+	numbers=left,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\itshape\color{gray},
+	numberstyle=\scriptsize,
+	numbersep=12pt,
+	tabsize=4,
+	extendedchars=true,
+	breaklines=true,
+	frame=b,
+	xleftmargin=24pt,
+	framexleftmargin=24pt,
+	framexrightmargin=2pt
+}
+
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35, 0.01}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
+\renewcommand\lstlistingname{Πρόγραμμα}
+\renewcommand\lstlistlistingname{Κατάλογος Προγραμμάτων}
 
 \begin{document}
 
@@ -48,6 +74,10 @@
 % Κατάλογος Πινάκων
 \addstarredchapterc{\listtablename} % minitoc
 \listoftables
+
+% Κατάλογος Προγραμμάτων
+\addstarredchapterc{\lstlistingname} % minitoc
+\lstlistoflistings
 
 % Κατάλογος Αλγορίθμων
 \addstarredchapterc{\listalgorithmname} % minitoc
