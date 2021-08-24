@@ -71,5 +71,49 @@
 
 
 \section{Barrier}
-\label{sec:Barrier}
+\label{sec:exp-barrier}
+Η ορθότητα της υλοποίησης του tree barrier ελέγχθηκε για την ορθότητά της με προγράμματα ελέγχου από τη βιβλιοθήκη libgomp και την \textit{OpenMP Validation Suite V 3.0} \cite{wang2012openmp, ompvalsuite3}. Ο λόγος όμως που αναπτύχθηκε ο tree barrier ήταν οι μειωμένες επιδόσεις του υπάρχοντα barrier του OMPi σε συστήματα NUMA, οπότε αφού εξασφαλίστηκε η ορθότητα της υλοποίησης, θα εστιάσουμε στο ζήτημα των επιδόσεων με τη χρήση μετροπρογραμμάτων.
 
+\subsection{EPCC OpenMP micro-benchmark suite}
+Η \textit{EPCC OpenMP micro-benchmark suite} \cite{bull1999measuring} είναι ένα σύνολο μετροπρογραμμάτων (micro-benchmarks) τα οποία μετράνε το κόστος σε χρόνο (overhead) που απαιτείται για λειτουργίες όπως ο συγχρονισμός (π.χ. barrier, κλειδαριές), η \textit{χρονοδρομολόγηση βρόχου} (loop sceduling) και οι πράξεις πινάκων. Η πιο πρόσφατη έκδοση (3.1) υποστηρίζει μέχρι και τις λειτουργίες που προδιαγράφει το OpenMP 3.0.
+
+Τα πειράματα που πραγματοποιήθηκαν επικεντρώθηκαν στη μέτρηση του overhead του barrier, όσο το πλήθος των κόμβων NUMA που χρησιμοποιούνται αυξάνεται. Με αυτό τον τρόπο ελέγχουμε κατά πόσο η εκάστοτε υλοποίηση barrier είναι κλιμακώσιμη. Οι υλοποιήσεις που συγκρίθηκαν είναι αυτές των μεταφραστών OMPi (κλασική και tree barrier), GCC, ICC και Clang. Η OpenMP processor binding policy παρέμεινε σταθερά στην τιμή \texttt{close}, ενώ σε κάθε OpenMP place τοποθετείται μόνο ένα νήμα OpenMP.
+
+
+\subsubsection{Paragon}
+Στα Σχήματα \ref{fig:bo-paragon-cores} και \ref{fig:bo-paragon-threads} φαίνεται το overhead του barrier κάθε μεταφραστή όταν χρησιμοποιούνται 1 έως 4 κόμβοι και ένα OpenMP νήμα ανά core ή H/W thread αντίστοιχα. Αυτό που παρατηρούμε, είναι ότι όταν \texttt{OMP\_PLACES="cores"} (Σχήμα \ref{fig:bo-paragon-cores}), για ένα κόμβο ο OMPi έχει το μικρότερο overhead, το οποίο όμως αυξάνει κατά πολύ για περισσότερους κόμβους. Στην περίπτωση που \texttt{OMP\_PLACES="threads"} (Σχήμα \ref{fig:bo-paragon-threads}), ο OMPi έχει εκθετική αύξηση του overhead για 2 ή περισσότερους κόμβους. Ο tree barrier και στις δύο περιπτώσεις έχει σαφώς καλύτερες επιδόσεις σε σχέση με τον κλασικό barrier του OMPi.
+
+Εξαίρεση αποτελεί η χρήση ενός μόνο κόμβου, κατά την οποία o tree barrier είναι λίγο πιο αργός από τον κλασικό barrier. Κάτι τέτοιο όμως είναι αναμενόμενο καθώς γίνονται επιπλέον υπολογισμοί οι οποίοι δεν μπορούν να αποφευχθούν καθώς τα αποτελέσματά τους χρησιμοποιούνται για να αποφασιστεί αν θα χρησιμοποιηθεί ο tree barrier ή όχι. Για καλύτερη κατανόηση δείτε το Σχήμα \ref{fig:bo-paragon-ompionly}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Figures/epcc_20210823_175412/default-places_cores_close.pdf}
+	\linebreak
+	\caption{Barrier overhead στον Parade: OMP\_PLACES=cores.}
+	\label{fig:bo-paragon-cores}
+\end{figure}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Figures/epcc_20210823_175412/default-places_threads_close.pdf}
+	\linebreak
+	\caption{Barrier overhead στον Parade: OMP\_PLACES=threads.}
+	\label{fig:bo-paragon-threads}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/ompi_default-places_cores_close.pdf}
+		\texttt{OMP\_PLACES=cores}
+    \end{minipage}\hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/ompi_default-places_threads_close.pdf}
+        \texttt{OMP\_PLACES=threads}
+    \end{minipage}
+    \caption{Barrier overhead στον Parade για τον κλασικό και tree barrier του OMPi.}
+    \label{fig:bo-paragon-ompionly}
+\end{figure}
