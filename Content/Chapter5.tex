@@ -5,7 +5,7 @@
 
 \section{Περιγραφή Συστημάτων}
 \label{sec:Systems Description}
-Η εκτέλεση των πειραμάτων έγινε σε υπολογιστικά συστήματα που εκπροσωπούν διαδεδομένες και ενδιαφέρουσες αρχιτεκτονικές οργανώσεις, όπως για παράδειγμα συστήματα τύπου SMP και NUMA. Τα χαρακτηριστικά των συστημάτων αυτών, τόσο από άποψη υλικού, όσο και από άποψη λογισμικού, φαίνονται στους Πίνακες \ref{tab:exp-systems-hardware} και \ref{tab:exp-systems-software}. Η αρχιτεκτονική των επεξεργαστών όλων των συστημάτων είναι η \textit{x86-64} ενώ το μέγεθος μιας γραμμής της κρυφής μνήμης είναι 64 bytes.
+Η εκτέλεση των πειραμάτων έγινε σε υπολογιστικά συστήματα NUMA που εκπροσωπούν τόσο διαδεδομένες, όσο και ενδιαφέρουσες αρχιτεκτονικές οργανώσεις. Τα χαρακτηριστικά των συστημάτων αυτών, τόσο από άποψη υλικού, όσο και από άποψη λογισμικού, φαίνονται στους Πίνακες \ref{tab:exp-systems-hardware} και \ref{tab:exp-systems-software}. Η αρχιτεκτονική των επεξεργαστών όλων των συστημάτων είναι η \textit{x86-64} ενώ το μέγεθος μιας γραμμής της κρυφής μνήμης είναι 64 bytes.
 
 Οι μεταφραστές οι οποίοι χρησιμοποιήθηκαν για τη συγκριτική αξιολόγηση του μεταφραστή OMPi είναι ο \textit{GNU C Compiler} (GCC), ο \textit{Intel C Compiler} (ICC)\footnote{Εγκαταστάθηκε μέσω των oneAPI Toolkits της Intel\textsuperscript{\textregistered}.} και ο \textit{Clang}. Ο πηγαίος κώδικας του OMPi μεταφράστηκε με τον GCC, ενώ τα απαιτούμενα πακέτα λογισμικού είναι διαθέσιμα στο Παράρτημα \ref{app:OMPi's software requirements}.
 
@@ -19,10 +19,10 @@
 		\hline
 		\texttt{paragon} & AMD  & 4 & 2 & 24 & 24 & 16 GB \\
 		\hline
-		\texttt{opti3060} & Intel & 1 & 1 & 4 & 4 & 8 GB \\
-		\hline
-		\texttt{ideapad} & Intel & 1 & 1 & 2 & 4 & 8 GB \\
-		\hline
+%		\texttt{opti3060} & Intel & 1 & 1 & 4 & 4 & 8 GB \\
+%		\hline
+%		\texttt{ideapad} & Intel & 1 & 1 & 2 & 4 & 8 GB \\
+%		\hline
 		\end{tabular}
 		\caption{Χαρακτηριστικά υλικού των πειραματικών συστημάτων.}
 		\label{tab:exp-systems-hardware}
@@ -38,10 +38,10 @@
 		\hline
 		\texttt{paragon} & CentOS 8 & \texttt{8.4.1} & \texttt{2021.3.0} & \texttt{11.0.0} & \texttt{2.2.0} & \texttt{4.18.0} \\
 		\hline
-		\texttt{opti3060} & Ubuntu 18.04.3 & \texttt{7.5.0} & \texttt{N/A} & \texttt{N/A} & \texttt{1.11.9} & \texttt{5.0.0} \\
-		\hline
-		\texttt{ideapad} & Mint 20.2 & \texttt{9.3.0} & \texttt{2021.3.0} & \texttt{10.0.0} & \texttt{2.1.0} & \texttt{5.4.0} \\
-		\hline
+%		\texttt{opti3060} & Ubuntu 18.04.3 & \texttt{7.5.0} & \texttt{N/A} & \texttt{N/A} & \texttt{1.11.9} & \texttt{5.0.0} \\
+%		\hline
+%		\texttt{ideapad} & Mint 20.2 & \texttt{9.3.0} & \texttt{2021.3.0} & \texttt{10.0.0} & \texttt{2.1.0} & \texttt{5.4.0} \\
+%		\hline
 		\end{tabular}
 		\caption{Χαρακτηριστικά λογισμικού των πειραματικών συστημάτων.}
 		\label{tab:exp-systems-software}
@@ -72,16 +72,16 @@
 
 \section{Barrier}
 \label{sec:exp-barrier}
-Η ορθότητα της υλοποίησης του tree barrier ελέγχθηκε για την ορθότητά της με προγράμματα ελέγχου από τη βιβλιοθήκη libgomp και την \textit{OpenMP Validation Suite V 3.0} \cite{wang2012openmp, ompvalsuite3}. Ο λόγος όμως που αναπτύχθηκε ο tree barrier ήταν οι μειωμένες επιδόσεις του υπάρχοντα barrier του OMPi σε συστήματα NUMA, οπότε αφού εξασφαλίστηκε η ορθότητα της υλοποίησης, θα εστιάσουμε στο ζήτημα των επιδόσεων με τη χρήση μετροπρογραμμάτων.
+Η ορθότητα της υλοποίησης του tree barrier ελέγχθηκε για την ορθότητά της με προγράμματα ελέγχου από τη βιβλιοθήκη libgomp και την \textit{OpenMP Validation Suite V 3.0} \cite{wang2012openmp, ompvalsuite3}. Ο λόγος όμως που αναπτύχθηκε ο tree barrier ήταν οι μειωμένες επιδόσεις του υπάρχοντα barrier του OMPi σε συστήματα NUMA, οπότε αφού εξασφαλίστηκε η ορθότητα της υλοποίησης, εστιάσαμε στο ζήτημα των επιδόσεων με τη χρήση μετροπρογραμμάτων.
 
 \subsection{EPCC OpenMP micro-benchmark suite}
-Η \textit{EPCC OpenMP micro-benchmark suite} \cite{bull1999measuring} είναι ένα σύνολο μετροπρογραμμάτων (micro-benchmarks) τα οποία μετράνε το κόστος σε χρόνο (overhead) που απαιτείται για λειτουργίες όπως ο συγχρονισμός (π.χ. barrier, κλειδαριές), η \textit{χρονοδρομολόγηση βρόχου} (loop sceduling) και οι πράξεις πινάκων. Η πιο πρόσφατη έκδοση (3.1) υποστηρίζει μέχρι και τις λειτουργίες που προδιαγράφει το OpenMP 3.0.
+Η \textit{EPCC OpenMP micro-benchmark suite} \cite{bull1999measuring} είναι ένα σύνολο μετροπρογραμμάτων (micro-benchmarks) τα οποία μετράνε το κόστος σε χρόνο (overhead) που απαιτείται για τη διεκπεραίωση λειτουργιών όπως ο συγχρονισμός (π.χ. barrier, κλειδαριές), η \textit{χρονοδρομολόγηση βρόχου} (loop sceduling) και οι πράξεις πινάκων. Η πιο πρόσφατη έκδοση (3.1) υποστηρίζει μέχρι και τις λειτουργίες που προδιαγράφει το OpenMP 3.0.
 
 Τα πειράματα που πραγματοποιήθηκαν επικεντρώθηκαν στη μέτρηση του overhead του barrier, όσο το πλήθος των κόμβων NUMA που χρησιμοποιούνται αυξάνεται. Με αυτό τον τρόπο ελέγχουμε κατά πόσο η εκάστοτε υλοποίηση barrier είναι κλιμακώσιμη. Οι υλοποιήσεις που συγκρίθηκαν είναι αυτές των μεταφραστών OMPi (κλασική και tree barrier), GCC, ICC και Clang. Η OpenMP processor binding policy παρέμεινε σταθερά στην τιμή \texttt{close}, ενώ σε κάθε OpenMP place τοποθετείται μόνο ένα νήμα OpenMP.
 
 
 \subsubsection{Parade}
-Στο Σχήμα \ref{fig:bo-parade-default-places} φαίνεται το overhead του barrier κάθε μεταφραστή όταν χρησιμοποιούνται 1 έως 4 κόμβοι και ένα νήμα ανά core ή H/W thread αντίστοιχα. Αυτό που παρατηρούμε, είναι ότι όταν \texttt{OMP\_PLACES="cores"}, για ένα κόμβο ο OMPi έχει το μικρότερο overhead, το οποίο όμως αυξάνει κατά πολύ για περισσότερους κόμβους. Στην περίπτωση που \texttt{OMP\_PLACES="threads"}, ο OMPi έχει εκθετική αύξηση του overhead για 2 ή περισσότερους κόμβους. Ο tree barrier και στις δύο περιπτώσεις έχει σαφώς καλύτερες επιδόσεις σε σχέση με τον κλασικό barrier του OMPi. Εξαίρεση αποτελεί η περίπτωση που χρησιμοποιείται ένας μόνο κόμβος, κατά την οποία o tree barrier είναι λίγο πιο αργός από τον κλασικό barrier. % Για καλύτερη κατανόηση δείτε το Σχήμα \ref{fig:bo-parade-ompionly}.
+Στο Σχήμα \ref{fig:bo-parade-default-places} φαίνεται το overhead του barrier κάθε μεταφραστή όταν χρησιμοποιούνται 1 έως 4 κόμβοι και ένα νήμα ανά core ή H/W thread αντίστοιχα. Αυτό που παρατηρούμε, είναι ότι όταν \texttt{OMP\_PLACES="cores"}, για ένα κόμβο ο OMPi έχει το μικρότερο overhead, το οποίο όμως αυξάνει κατά πολύ για περισσότερους κόμβους. Στην περίπτωση που \texttt{OMP\_PLACES="threads"}, ο OMPi έχει εκθετική αύξηση του overhead για 2 ή περισσότερους κόμβους. Ο tree barrier και στις δύο περιπτώσεις έχει σαφώς καλύτερες επιδόσεις σε σχέση με τον κλασικό barrier του OMPi, ενώ το overhead του αυξάνεται με αρκετά μικρό ρυθμό. Εξαίρεση αποτελεί η περίπτωση που χρησιμοποιείται ένας μόνο κόμβος, κατά την οποία o tree barrier είναι λίγο πιο αργός από τον κλασικό barrier. % Για καλύτερη κατανόηση δείτε το Σχήμα \ref{fig:bo-parade-ompionly}.
 
 %\begin{figure}[t]
 %	\centering
@@ -131,7 +131,7 @@
 %    \label{fig:bo-parade-ompionly}
 %\end{figure}
 
-Η σύγκριση που πραγματοποιήθηκε, ναι μεν είναι σωστή από την πλευρά του χρήστη καθώς χρησιμοποιείται το ίδιο abstract name για τον καθορισμό των places, όμως ο κάθε μεταφραστής μετασχηματίζει με διαφορετικό τρόπο το abstrat name σε σύνολα από αναγνωριστικά επεξεργαστών. Για παράδειγμα, όταν \texttt{OMP\_PLACES=cores} o GCC τοποθετεί στο place partition με κυκλικό τρόπο (round-robin) ένα core ανά κόμβο. Συνεπώς, αν ο χρήστης επιλέξει ως processor binding policy την \texttt{close}, νήματα που θα τοποθετηθούν σε γειτονικά places, θα καταλήξουν σε διαφορετικούς κόμβους NUMA.
+Η σύγκριση που πραγματοποιήθηκε, ναι μεν είναι σωστή από την πλευρά του χρήστη καθώς χρησιμοποιείται το ίδιο abstract name για τον καθορισμό των places, όμως ο κάθε μεταφραστής μετασχηματίζει με διαφορετικό τρόπο το abstract name σε σύνολα από αναγνωριστικά επεξεργαστών. Για παράδειγμα, όταν \texttt{OMP\_PLACES=cores} o GCC τοποθετεί στο place partition με κυκλικό τρόπο (round-robin) ένα core ανά κόμβο. Συνεπώς, αν ο χρήστης επιλέξει ως processor binding policy την \texttt{close}, νήματα που θα τοποθετηθούν σε γειτονικά places, θα καταλήξουν σε διαφορετικούς κόμβους NUMA.
 
 Λόγω της ουσιαστικής διαφοράς στο place partition που χρησιμοποιεί το σύστημα χρόνου εκτέλεσης του κάθε μεταφραστή, πραγματοποιήσαμε επιπλέον μετρήσεις κατά τις οποίες ορίσαμε την τιμή της μεταβλητής \texttt{OMP\_PLACES} χειροκίνητα, βάσει του πώς δημιουργεί το place partition ο κάθε μεταφραστής. Οι μεταφραστές ICC και Clang ορίζουν με τον ίδιο τρόπο το place partition, οπότε προέκυψαν οι τρεις ακόλουθοι τρόποι ορισμού του:
 \begin{itemize}
@@ -140,7 +140,9 @@
 	\item Clang/ICC places: \texttt{OMP\_PLACES="clang-cores"} και \texttt{OMP\_PLACES="clang-threads"}.
 \end{itemize}
 
-Στα Σχήματα \ref{fig:bo-parade-ompi-places}, \ref{fig:bo-parade-gcc-places} και \ref{fig:bo-parade-clang-places} μπορείτε να δείτε τις μετρήσεις οι οποίες πάρθηκαν με όλους τους μεταφραστές να χρησιμοποιούν το ίδιο place partition. Σε όλες τις περιπτώσεις είναι εμφανής η επίτευξη καλύτερης επίδοσης του tree barrier σε σχέση με τον κλασικό barrier του OMPi. Το overhead όταν χρησιμοποιούνται δύο κόμβοι είναι σαφώς πιο αυξημένο σε σχέση με όταν χρησιμοποιείται ένας κόμβος, φαινόμενο πλήρως δικαιολογημένο καθώς στην τελευταία περίπτωση δεν πραγματοποιούνται απομακρυσμένες προσβάσεις μνήμης. Όσο το πλήθος των κόμβων αυξάνεται σε τιμές μεγαλύτερες του δύο, παρατηρούμε ότι η αύξηση του overhead είναι πολύ μικρή. %s Το γεγονός αυτό επιβεβαιώνει την κλιμακωσιμότητα του νέου barrier.
+Στα Σχήματα \ref{fig:bo-parade-ompi-places}, \ref{fig:bo-parade-gcc-places} και \ref{fig:bo-parade-clang-places} μπορείτε να δείτε τις μετρήσεις οι οποίες πάρθηκαν με όλους τους μεταφραστές να χρησιμοποιούν το ίδιο place partition. Σε όλες τις περιπτώσεις που χρησιμοποιούνται πολλαπλοί κόμβοι είναι εμφανής η επίτευξη καλύτερης επίδοσης του tree barrier σε σχέση με τον κλασικό barrier του OMPi. Το overhead όταν χρησιμοποιούνται δύο κόμβοι είναι σαφώς πιο αυξημένο σε σχέση με όταν χρησιμοποιείται ένας κόμβος, φαινόμενο πλήρως δικαιολογημένο καθώς στην τελευταία περίπτωση δεν πραγματοποιούνται απομακρυσμένες προσβάσεις μνήμης. Όσο το πλήθος των κόμβων αυξάνεται σε τιμές μεγαλύτερες του δύο, παρατηρούμε ότι η αύξηση του overhead είναι πολύ μικρή. %s Το γεγονός αυτό επιβεβαιώνει την κλιμακωσιμότητα του νέου barrier.
+
+Σε μερικά σχήματα είναι ορατές μη αναμενόμενες συμπεριφορές από τον ICC, όπως για παράδειγμα στο Σχήμα \ref{fig:bo-parade-ompi-places} όπου διακρίνεται ένα πολύ μεγαλύτερο overhead για δύο κόμβους σε σχέση με τους τρεις κόμβους. Αυτό το φαινόμενο παρατηρήθηκε στην τρέχουσα έκδοση του ICC μετά από την πιο πρόσφατη αναβάθμιση που πραγματοποιήθηκε ώστε οι εκδόσεις των πακέτων λογισμικού να ταυτίζονται με αυτές του συστήματος Paragon και άρα να μην οδηγηθούμε σε εσφαλμένα συμπεράσματα λόγω διαφορών ανάμεσα στις εκδόσεις.
 
 \begin{figure}
     \centering
@@ -190,4 +192,48 @@
     \label{fig:bo-parade-clang-places}
 \end{figure}
 
+
+
 \subsubsection{Paragon}
+Στα Σχήματα \ref{fig:bo-paragon-default-places} και \ref{fig:bo-paragon-default-places-ompionly} φαίνονται τα αποτελέσματα των μετρήσεων που πραγματοποιήθηκαν στον Paragon. Επειδή κάθε core διαθέτει μόνο ένα H/W thread, τα abstract names \texttt{threads} και \texttt{cores} έχουν το ίδιο αποτέλεσμα. Εξαίρεση αποτελούν οι ICC και Clang οι οποίοι εσφαλμένα θεωρούν ότι κάθε επεξεργαστής διαθέτει ένα μόνο core αντί για δώδεκα, γεγονός που θεωρήθηκε ως σφάλμα (bug) και αγνοήθηκε.
+
+\begin{figure}
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/paragon_epcc_20210825_132109/default-places_threads_close.pdf}
+		\caption{Barrier overhead στον Paragon.}
+		\label{fig:bo-paragon-default-places}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/paragon_epcc_20210825_132109/ompi_default-places_threads_close.pdf}
+        \caption{Barrier overhead στον Paragon για τους barriers του OMPi.}
+        \label{fig:bo-paragon-default-places-ompionly}
+    \end{minipage}
+\end{figure}
+
+
+%
+%\begin{figure}[t]
+%	\centering
+%	\includegraphics[width=0.7\textwidth]{Figures/paragon_epcc_20210825_132109/default-places_threads_close.pdf}
+%	\linebreak
+%	\caption{Barrier overhead στον Paragon: OMP\_PLACES=threads.}
+%	\label{fig:bo-paragon-threads}
+%\end{figure}
+%
+%\begin{figure}[t]
+%	\centering
+%	\includegraphics[width=0.7\textwidth]{Figures/paragon_epcc_20210825_132109/ompi_default-places_threads_close.pdf}
+%	\linebreak
+%	\caption{Barrier overhead στον Paragon για τους barriers του OMPi.}
+%	\label{fig:bo-paragon-ompionly}
+%\end{figure}
+
+Από τις μετρήσεις στον Paragon παρατηρούμε ότι τα overheads των OMPi, GCC και ICC αυξάνουν σχεδόν γραμμικά και συγκλίνουν για πλήθος τεσσάρων κόμβων. Ο Clang φαίνεται ότι κλιμακώνει καλύτερα για τρεις και τέσσερις κόμβους από τους OMPi, GCC και ICC, αλλά όχι το ίδιο αποδοτικά όπως συνέβαινε στον Parade. Ο OMPi tree barrier επιδεικνύει την καλύτερη επίδοση για τρεις και τέσσερις κόμβους, με το overhead να αυξάνει με πολύ μικρό ρυθμό όσο αυξάνεται το πλήθος των κόμβων, φαινόμενο που παρατηρήθηκε και στον Parade. Επιπλέον, παρατηρούμε ο tree barrier έχει λίγο πιο μεγάλο overhead σε σχέση με τον κλασικό barrier του OMPi, όχι μόνο για ένα κόμβο αλλά και για δύο. Κάτι τέτοιο πιθανώς συμβαίνει καθώς οι δύο κόμβοι ανήκουν στο ίδιο ενσωματωμένο κύκλωμα επεξεργαστή.
+
+
+\subsubsection{Σύνοψη συμπεραμάτων}
+Ο νέος αλγόριθμος tree barrier που υλοποιήθηκε βελτίωσε σημαντικά το κόστος που απαιτεί ο συγχρονισμός των νημάτων όταν χρησιμοποιούνται δύο ή περισσότεροι κόμβοι NUMA, γεγονός που καθιστά εφικτή και αποδοτική την κλιμακωσιμότητα του μεταφραστή OMPi σε συστήματα NUMA πάρα πολλών πυρήνων.
+
