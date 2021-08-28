@@ -265,10 +265,10 @@ for every thread (i):
 \footnotetext{Συνολικό μέγεθος απαιτήσεων μνήμης σε σελίδες (pages).}
 
 %\begin{itemize}
-%	\item 3 πίνακες/barrier * 256 στοιχεία/πίνακα * 64 bytes/στοιχείο * 128 barriers \newline = 6 MBs = 1536 pages
-%	\item 1 πίνακα/barrier * 256 στοιχεία/πίνακα * 64 bytes/στοιχείο * 128 barriers \newline = 2 MBs = 512 pages
-%	\item 1 πίνακα/barrier * 256 στοιχεία/πίνακα * 64 bytes/στοιχείο * 1 barrier \newline = 16 KBs = 4 pages
-%	\item 1 πίνακα/barrier * 128 στοιχεία/πίνακα * 64 bytes/στοιχείο * 1 barrier \newline = 8 KBs = 2 pages
+%	\item 3 πίνακες/barrier * 256 στοιχεία/πίνακα * 64 bytes/στοιχείο * 128 barriers \newline = 6 MiB = 1536 pages
+%	\item 1 πίνακα/barrier * 256 στοιχεία/πίνακα * 64 bytes/στοιχείο * 128 barriers \newline = 2 MiB = 512 pages
+%	\item 1 πίνακα/barrier * 256 στοιχεία/πίνακα * 64 bytes/στοιχείο * 1 barrier \newline = 16 KiB = 4 pages
+%	\item 1 πίνακα/barrier * 128 στοιχεία/πίνακα * 64 bytes/στοιχείο * 1 barrier \newline = 8 KiB = 2 pages
 %\end{itemize}
 
 Συνεπώς, ο απαιτούμενος χώρος μνήμης μειώθηκε από τα 12 MiB (3073 pages) στα 8 KiB (2 pages), δηλαδή υπήρξε περίπου μία μείωση της τάξης του $99.93\%$ και η οποία είναι ανεξάρτητη του πλήθους των νημάτων που συμμετέχουν στην παράλληλη ομάδα.

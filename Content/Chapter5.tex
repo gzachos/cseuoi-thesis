@@ -15,14 +15,10 @@
 		\hline
 		Hostname & Proc. Mfr. & NUMA nodes & Sockets & Cores & H/W threads & RAM \\
 		\hline \hline
-		\texttt{parade} & Intel & 4 & 4 & 64 & 128 & 256 GB \\
+		\texttt{parade} & Intel & 4 & 4 & 64 & 128 & 256 GiB \\
 		\hline
-		\texttt{paragon} & AMD  & 4 & 2 & 24 & 24 & 16 GB \\
+		\texttt{paragon} & AMD  & 4 & 2 & 24 & 24 & 16 GiB \\
 		\hline
-%		\texttt{opti3060} & Intel & 1 & 1 & 4 & 4 & 8 GB \\
-%		\hline
-%		\texttt{ideapad} & Intel & 1 & 1 & 2 & 4 & 8 GB \\
-%		\hline
 		\end{tabular}
 		\caption{Χαρακτηριστικά υλικού των πειραματικών συστημάτων.}
 		\label{tab:exp-systems-hardware}
@@ -38,10 +34,6 @@
 		\hline
 		\texttt{paragon} & CentOS 8 & \texttt{8.4.1} & \texttt{2021.3.0} & \texttt{11.0.0} & \texttt{2.2.0} & \texttt{4.18.0} \\
 		\hline
-%		\texttt{opti3060} & Ubuntu 18.04.3 & \texttt{7.5.0} & \texttt{N/A} & \texttt{N/A} & \texttt{1.11.9} & \texttt{5.0.0} \\
-%		\hline
-%		\texttt{ideapad} & Mint 20.2 & \texttt{9.3.0} & \texttt{2021.3.0} & \texttt{10.0.0} & \texttt{2.1.0} & \texttt{5.4.0} \\
-%		\hline
 		\end{tabular}
 		\caption{Χαρακτηριστικά λογισμικού των πειραματικών συστημάτων.}
 		\label{tab:exp-systems-software}
@@ -49,7 +41,7 @@
 
 
 \subsection{Parade}
-Ο Parade είναι ένα σύστημα Dell PowerEdge R840 με τέσσερις κόμβους NUMA. Κάθε κόμβος διαθέτει 64 GBs μνήμης και έναν επεξεργαστή \textit{Intel\textsuperscript{\textregistered} Xeon\textsuperscript{\textregistered} Gold 6130} ο οποίος αποτελείται από 12 πυρήνες και ιεραρχία κρυφών μνημών τριών επιπέδων (L1i \& L1d, L2, L3). Τα επίπεδα ένα και δύο των κρυφών μνημών είναι κοινά ανά πυρήνα, ενώ το επίπεδο τρία είναι κοινό για όλους τους πυρήνες του επεξεργαστή. Επίσης, κάθε πυρήνας περιέχει δύο H/W threads. Η σχηματική αναπαράσταση της τοπολογίας του είχε δοθεί στο Σχήμα \ref{fig:parade-topo}.
+Ο Parade είναι ένα σύστημα Dell PowerEdge R840 με τέσσερις κόμβους NUMA. Κάθε κόμβος διαθέτει 64 GiB μνήμης και έναν επεξεργαστή \textit{Intel\textsuperscript{\textregistered} Xeon\textsuperscript{\textregistered} Gold 6130} ο οποίος αποτελείται από 12 πυρήνες και ιεραρχία κρυφών μνημών τριών επιπέδων (L1i \& L1d, L2, L3). Τα επίπεδα ένα και δύο των κρυφών μνημών είναι κοινά ανά πυρήνα, ενώ το επίπεδο τρία είναι κοινό για όλους τους πυρήνες του επεξεργαστή. Επίσης, κάθε πυρήνας περιέχει δύο H/W threads. Η σχηματική αναπαράσταση της τοπολογίας του είχε δοθεί στο Σχήμα \ref{fig:parade-topo}.
 
 \subsection{Paragon}
 Ο Paragon είναι ένα σύστημα με δύο επεξεργαστές \textit{AMD Opteron\textsuperscript{\texttrademark} Processor 6166 HE}, καθένας από τους οποίους περιλαμβάνει δύο κόμβους NUMA. Κάθε κόμβος διαθέτει 6 πυρήνες του ενός H/W thread και ιεραρχία κρυφής μνήμης τριών επιπέδων αντίστοιχη με τους κόμβους του συστήματος Parade που είδαμε προηγουμένως. Η σχηματική αναπαράσταση της τοπολογίας του φαίνεται στο Σχήμα \ref{fig:paragon-topo}.
