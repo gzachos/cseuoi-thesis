@@ -12,7 +12,7 @@
 \advisorEn{Vassilios V. Dimakopoulos, Associate Professor}
 
 % Πακέτο για την εμφάνιση περιθωρίων (χρήσιμο για την εύρεση overfull boxes)
-%\usepackage{showframe}
+% \usepackage{showframe}
 
 % Πακέτο για τη διατήρηση των floats (εικόνες κ.α.) εντός των ενοτήτων
 \usepackage[section]{placeins}
@@ -34,12 +34,12 @@
 	frame=b,
 	xleftmargin=24pt,
 	framexleftmargin=24pt,
-	framexrightmargin=2pt
+	framexrightmargin=-4pt
 }
 
 \usepackage{caption}
 \DeclareCaptionFont{white}{\color{white}}
-\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35, 0.01}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35, 0.01}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\hspace{15pt}#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
 
 \renewcommand\lstlistingname{Πρόγραμμα}
