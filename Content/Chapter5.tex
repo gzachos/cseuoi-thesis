@@ -68,164 +68,146 @@
 
 Η \textit{EPCC OpenMP micro-benchmark suite} \cite{bull1999measuring} είναι ένα σύνολο μετροπρογραμμάτων (micro-benchmarks) τα οποία μετράνε το κόστος σε χρόνο (overhead) που απαιτείται για τη διεκπεραίωση λειτουργιών όπως ο συγχρονισμός (π.χ. barrier, κλειδαριές), η \textit{χρονοδρομολόγηση βρόχου} (loop scheduling) και οι πράξεις πινάκων. Η πιο πρόσφατη έκδοση (3.1) υποστηρίζει μέχρι και τις λειτουργίες που προδιαγράφει το OpenMP 3.0.
 
-Τα πειράματα που πραγματοποιήθηκαν επικεντρώθηκαν στη μέτρηση του overhead του barrier, όσο το πλήθος των κόμβων NUMA που χρησιμοποιούνται αυξάνεται. Πιο συγκεκριμένα, ανατίθεται ένα νήμα σε κάθε core ή H/W thread του κόμβου, ενώ πραγματοποιούνται εκτελέσεις με 1 έως $N$ κόμβους, όπου $N$ το πλήθος των διαθέσιμων κόμβων του συστήματος.
-% Η ανάθεση των νημάτων επιτυγχάνεται θέτοντας \texttt{OMP\_PROC\_BIND="close"}, \texttt{OMP\_PLACES="cores"} ή \texttt{OMP\_PLACES="threads"} και \texttt{OMP\_NUM\_THREADS=$N$}, όπου $N$ το πλήθος των νημάτων ανά κόμβο.
- Με αυτό τον τρόπο ελέγχουμε κατά πόσο η εκάστοτε υλοποίηση barrier είναι κλιμακώσιμη. Οι υλοποιήσεις που συγκρίθηκαν είναι αυτές των μεταφραστών OMPi (κλασική και tree barrier), GCC, ICC και Clang.
+Τα πειράματα που πραγματοποιήθηκαν επικεντρώθηκαν στη μέτρηση του overhead του barrier, όσο το πλήθος των κόμβων NUMA που χρησιμοποιούνται αυξάνεται. Πιο συγκεκριμένα, ανατίθεται ένα δεδομένο πλήθος νημάτων ανά κόμβο, ενώ πραγματοποιούνται εκτελέσεις με 1 έως $N$ κόμβους, όπου $N$ το πλήθος των διαθέσιμων κόμβων του συστήματος. Με αυτό τον τρόπο ελέγχουμε κατά πόσο η εκάστοτε υλοποίηση barrier είναι κλιμακώσιμη. Οι υλοποιήσεις που συγκρίθηκαν είναι αυτές των μεταφραστών OMPi (κλασική και tree barrier), GCC, ICC και Clang.
 
 
 \subsection{Parade}
-Στο Σχήμα \ref{fig:bo-parade-default-places} φαίνεται το overhead του barrier κάθε μεταφραστή όταν χρησιμοποιούνται 1 έως 4 κόμβοι και ένα νήμα ανά core ή H/W thread αντίστοιχα. Αυτό που παρατηρούμε, είναι ότι όταν \texttt{OMP\_PLACES="cores"}, για ένα κόμβο ο OMPi έχει το μικρότερο overhead, το οποίο όμως αυξάνει κατά πολύ για περισσότερους κόμβους. Στην περίπτωση που \texttt{OMP\_PLACES="threads"}, ο OMPi έχει εκθετική αύξηση του overhead για 2 ή περισσότερους κόμβους. Ο tree barrier και στις δύο περιπτώσεις έχει σαφώς καλύτερες επιδόσεις σε σχέση με τον κλασικό barrier του OMPi, ενώ το overhead του αυξάνεται με αρκετά μικρό ρυθμό. Εξαίρεση αποτελεί η περίπτωση που χρησιμοποιείται ένας μόνο κόμβος, κατά την οποία o tree barrier είναι λίγο πιο αργός από τον κλασικό barrier. % Για καλύτερη κατανόηση δείτε το Σχήμα \ref{fig:bo-parade-ompionly}.
+Στα Σχήματα \ref{fig:bo-parade-sockets} α), γ) και ε) φαίνεται το overhead του barrier κάθε μεταφραστή όταν χρησιμοποιούνται 1 έως 4 κόμβοι, ενώ το πλήθος των νημάτων ανά κόμβο κυμαίνεται σε 8, 16 και 32. Για την καλύτερη σύγκριση μεταξύ του κλασικού barrier του OMPi και του νέου barrier, τα Σχήματα \ref{fig:bo-parade-sockets} β), δ) και στ)    περιέχουν τις γραφικές παραστάσεις μόνο των δύο αυτών υλοποιήσεων.
 
-%\begin{figure}[t]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{Figures/epcc_20210823_175412/default-places_cores_close.pdf}
-%	\linebreak
-%	\caption{Barrier overhead στον Parade: OMP\_PLACES=cores.}
-%	\label{fig:bo-parade-cores}
-%\end{figure}
-%
-%\begin{figure}[t]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{Figures/epcc_20210823_175412/default-places_threads_close.pdf}
-%	\linebreak
-%	\caption{Barrier overhead στον Parade: OMP\_PLACES=threads.}
-%	\label{fig:bo-parade-threads}
-%\end{figure}
+Επειδή στις συγκεκριμένες εκδόσεις των μεταφραστών μόνο οι OMPi και ICC υποστηρίζουν το αφηρημένο όνομα \texttt{numa\_domains}, για την ανάθεση των νημάτων σε επεξεργαστές και συνεπώς σε κόμβους χρησιμοποιήθηκε το αφηρημένο όνομα \texttt{sockets} το οποίο στην περίπτωση του Parade είναι ταυτόσημο με το όνομα \texttt{numa\_domains}. Πιο συγκεκριμένα, στις μεταβλητές περιβάλλοντος του OpenMP ανατέθηκαν οι εξής τιμές: \texttt{OMP\_PLACES="sockets($N$)"}, \texttt{OMP\_NUM\_THREADS="$T$"} και \texttt{OMP\_PROC\_BIND="close"}, όπου $N$ το πλήθος των sockets/κόμβων που χρησιμοποιούνται κάθε φορά (1, 2, 3 και 4) και $T$ το συνολικό πλήθος των νημάτων που προκύπτει ως $N \times T_n$, με το $T_n$ να αναπαριστά το πλήθος των νημάτων που θέλουμε να χρησιμοποιηθούν σε κάθε κόμβο (8, 16 και 32). Η πολιτική \texttt{close} χρησιμοποιήθηκε για την ισοκατανομή των $T$ νημάτων στους $N$ κόμβους, δηλαδή για την ανάθεση $T_n = T/N$ νημάτων ανά κόμβο. Με αυτό τον τρόπο, ανατίθενται $T_n$ νήματα σε κάθε κόμβο, χωρίς όμως να γνωρίζουμε ακριβώς σε ποιούς επεξεργαστές του κόμβου θα ανατεθούν τα $T_n$ νήματα, καθώς η ακριβής τοποθέτηση των νημάτων εξαρτάται από τη βιβλιοθήκη νημάτων που χρησιμοποιεί η κάθε υλοποίηση και πιθανώςc και από το λειτουργικό σύστημα.
 
-\begin{figure}
+Αυτό που παρατηρούμε βάσει του Σχήματος \ref{fig:bo-parade-sockets}, είναι ο μεγάλος ρυθμός αύξησης του overhead στην περίπτωση του παλιού barrier του OMPi. Σε αντίθεση, ο νέος barrier, στην περίπτωση του ενός κόμβου επιδεικνύει ελαφρώς μεγαλύτερο overhead σε σχέση με τον παλιό, ενώ για δύο ή περισσότερους κόμβους ο ρυθμός αύξησης είναι ιδιαίτερα μικρός. Το overhead του tree barrier όταν χρησιμοποιούνται δύο κόμβοι είναι σαφώς πιο αυξημένο σε σχέση με όταν χρησιμοποιείται ένας κόμβος, φαινόμενο πλήρως δικαιολογημένο καθώς στην πρώτη περίπτωση πραγματοποιούνται απομακρυσμένες προσβάσεις μνήμης και ο αλγόριθμος barrier είναι πιο πολύπλοκος. Όταν χρησιμοποιούνται 8 νήματα ανά κόμβο (Σχήματα \ref{fig:bo-parade-sockets} α) και β)) παρατηρούμε ότι ο παλιός barrier πλησιάζει το overhead του νέου, κάτι που πιθανώς συμβαίνει λόγω του μικρού πλήθους νημάτων (Η αξιοποίηση των H/W threads του κόμβου ανέρχεται το πολύ στο $25\%$).
+
+\begin{figure}[htbp]
     \centering
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/default-places_cores_close.pdf}
-		\texttt{OMP\_PLACES=cores}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/sockets_tpn-8_close.pdf}
+		α)
+    \end{minipage}\hfill
+     \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_sockets_tpn-8_close.pdf}
+		β)
+    \end{minipage}
+    \newline
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/sockets_tpn-16_close.pdf}
+        γ)
     \end{minipage}\hfill
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/default-places_threads_close.pdf}
-        \texttt{OMP\_PLACES=threads}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_sockets_tpn-16_close.pdf}
+        δ)
     \end{minipage}
-    \caption{Barrier overhead στον Parade (Default places).}
-    \label{fig:bo-parade-default-places}
+    \newline
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/sockets_tpn-32_close.pdf}
+        ε)
+    \end{minipage}\hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_sockets_tpn-32_close.pdf}
+        στ)
+    \end{minipage}
+    \newline \newline
+    {\small α), β) 8 νήματα ανά κόμβο, γ), δ) 16 νήματα ανά κόμβο, ε), στ) 32 νήματα ανά κόμβο}
+    \caption{Barrier overhead στον Parade (ανάθεση νημάτων ανά socket).}
+    \label{fig:bo-parade-sockets}
 \end{figure}
 
-%\begin{figure}
-%    \centering
-%    \begin{minipage}{0.5\textwidth}
-%        \centering
-%        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/ompi_default-places_cores_close.pdf}
-%		\texttt{OMP\_PLACES=cores}
-%    \end{minipage}\hfill
-%    \begin{minipage}{0.5\textwidth}
-%        \centering
-%        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/ompi_default-places_threads_close.pdf}
-%        \texttt{OMP\_PLACES=threads}
-%    \end{minipage}
-%    \caption{Barrier overhead στον Parade για τους barriers του OMPi (Default places).}
-%    \label{fig:bo-parade-ompionly}
-%\end{figure}
+Κατά τη διάρκεια διεξαγωγής των παραπάνω πειραμάτων, παρατηρήθηκαν μεγάλες και μη αναμενόμενες διακυμάνσεις στο overhead, ειδικά στην περίπτωση του ICC και του Clang. Για παράδειγμα, το overhead για δύο κόμβους ήταν πολύ μεγαλύτερο σε σχέση με αυτό για τρεις ή τέσσερις κόμβους. Ο λόγος που συμβαίνει αυτό κατά πάσα πιθανότητα έγγειται στο γεγονός ότι υπάρχει έλλειψη ελέγχου στο πώς ανατίθενται τα νήματα στα H/W threads του socket, καθώς παρατηρήθηκε ότι ακόμα και 3 νήματα εκτελούνταν στο ίδιο H/W thread ενώ θα μπορούσαν να ανατεθούν σε διαφορετικά. Παρόλα αυτά, η χρήση πιο περιοριστικών τρόπων ανάθεσης νημάτων (π.χ. ανά core ή H/W thread) οδηγεί σε χειρότερες ή καλύτερες επιδόσεις ανάλογα με τον κάθε μεταφραστή, καθιστώντας με αυτό τον τρόπο δυσχερή τη δίκαιη σύγκριση μεταξύ τους.
 
-Η σύγκριση που πραγματοποιήθηκε, ναι μεν είναι σωστή από την πλευρά του χρήστη καθώς χρησιμοποιείται το ίδιο abstract name για τον καθορισμό των places, όμως ο κάθε μεταφραστής μετασχηματίζει με διαφορετικό τρόπο το abstract name σε σύνολα από αναγνωριστικά επεξεργαστών. Για παράδειγμα, όταν \texttt{OMP\_PLACES=cores} o GCC τοποθετεί στο place partition με κυκλικό τρόπο (round-robin) ένα core ανά κόμβο. Συνεπώς, αν ο χρήστης επιλέξει ως processor binding policy την \texttt{close}, νήματα που θα τοποθετηθούν σε γειτονικά places, θα καταλήξουν σε διαφορετικούς κόμβους NUMA.
+Ενδεικτικά, στο Σχήμα \ref{fig:bo-parade-topothreads} φαίνονται οι μετρήσεις οι οποίες έγιναν χρησιμοποιώντας πιο περιοριστικούς τρόπους ανάθεσης νημάτων σε επεξεργαστές. Πιο συγκεκριμένα, αντί να ανατεθούν $T_n$ (8, 16 και 32) νήματα στο σύνολο των H/W threads του κάθε κόμβου, ανατέθηκε ένα νήμα σε ένα μόνο H/W thread με τέτοιο τρόπο ώστε η κατανομή εντός του κόμβου να είναι αραιή και να μη χρησιμοποιούνται H/W threads που ανήκουν σε γειτονικά places. Η ανάθεση αυτή επιτεύχθηκε με τον ακόλουθο τρόπο. Αρχικά ορίστηκαν τα OpenMP places με τη χρήση ρητής λίστας η οποία περιγράφει κάθε φορά τα αναγνωριστικά των επεξεργαστών που περιέχονται σε 1, 2, 3 και 4 κόμβους και άρα το μέγεθος του place partition ισούται με $P = N \times 32$, όπου $N$ το πλήθος των κόμβων που χρησιμοποιούνται κάθε φορά. Η ρητή λίστα βασίστηκε στην τοπολογία όπως αυτή παρέχεται από τη βιβλιοθήκη hwloc που είδαμε νωρίτερα στην Υποενότητα \ref{ssec:hwloc}.
 
-Λόγω της ουσιαστικής διαφοράς στο place partition που χρησιμοποιεί το σύστημα χρόνου εκτέλεσης του κάθε μεταφραστή, πραγματοποιήσαμε επιπλέον μετρήσεις κατά τις οποίες ορίσαμε την τιμή της μεταβλητής \texttt{OMP\_PLACES} χειροκίνητα, βάσει του πώς δημιουργεί το place partition ο κάθε μεταφραστής. Οι μεταφραστές ICC και Clang ορίζουν με τον ίδιο τρόπο το place partition, οπότε προέκυψαν οι τρεις ακόλουθοι τρόποι ορισμού του:
-\begin{itemize}
-	\item OMPi places: \texttt{OMP\_PLACES="ompi-cores"} και \texttt{OMP\_PLACES="ompi-threads"}.
-	\item GCC places: \texttt{OMP\_PLACES="gcc-cores"} και \texttt{OMP\_PLACES="gcc-threads"}.
-	\item Clang/ICC places: \texttt{OMP\_PLACES="clang-cores"} και \texttt{OMP\_PLACES="clang-threads"}.
-\end{itemize}
-
-Στα Σχήματα \ref{fig:bo-parade-ompi-places}, \ref{fig:bo-parade-gcc-places} και \ref{fig:bo-parade-clang-places} μπορείτε να δείτε τις μετρήσεις οι οποίες πάρθηκαν με όλους τους μεταφραστές να χρησιμοποιούν το ίδιο place partition. Σε όλες τις περιπτώσεις που χρησιμοποιούνται πολλαπλοί κόμβοι είναι εμφανής η επίτευξη καλύτερης επίδοσης του tree barrier σε σχέση με τον κλασικό barrier του OMPi. Το overhead όταν χρησιμοποιούνται δύο κόμβοι είναι σαφώς πιο αυξημένο σε σχέση με όταν χρησιμοποιείται ένας κόμβος, φαινόμενο πλήρως δικαιολογημένο καθώς στην τελευταία περίπτωση δεν πραγματοποιούνται απομακρυσμένες προσβάσεις μνήμης. Όσο το πλήθος των κόμβων αυξάνεται σε τιμές μεγαλύτερες του δύο, παρατηρούμε ότι η αύξηση του overhead είναι πολύ μικρή. %s Το γεγονός αυτό επιβεβαιώνει την κλιμακωσιμότητα του νέου barrier.
-
-Σε μερικά σχήματα είναι ορατές μη αναμενόμενες συμπεριφορές από τον ICC, όπως για παράδειγμα στο Σχήμα \ref{fig:bo-parade-ompi-places} όπου διακρίνεται ένα πολύ μεγαλύτερο overhead για δύο κόμβους σε σχέση με τους τρεις κόμβους. Αυτό το φαινόμενο παρατηρήθηκε στην τρέχουσα έκδοση του ICC μετά από την πιο πρόσφατη αναβάθμιση που πραγματοποιήθηκε ώστε οι εκδόσεις των πακέτων λογισμικού να ταυτίζονται με αυτές του συστήματος Paragon και άρα να μην οδηγηθούμε σε εσφαλμένα συμπεράσματα λόγω διαφορών ανάμεσα στις εκδόσεις.
-
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/ompi-places_cores_close.pdf}
-		\texttt{OMP\_PLACES=ompi-cores}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/topothreads_tpn-8_spread.pdf}
+		α)
+    \end{minipage}\hfill
+     \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_topothreads_tpn-8_spread.pdf}
+		β)
+    \end{minipage}
+    \newline
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/topothreads_tpn-16_spread.pdf}
+        γ)
     \end{minipage}\hfill
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/ompi-places_threads_close.pdf}
-        \texttt{OMP\_PLACES=ompi-threads}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_topothreads_tpn-16_spread.pdf}
+        δ)
     \end{minipage}
-    \caption{Barrier overhead στον Parade (OMPi places).}
-    \label{fig:bo-parade-ompi-places}
+    \newline
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/topothreads_tpn-32_close.pdf}
+        ε)
+    \end{minipage}\hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_topothreads_tpn-32_close.pdf}
+        στ)
+    \end{minipage}
+    \newline \newline
+    {\small α), β) 8 νήματα ανά κόμβο, γ), δ) 16 νήματα ανά κόμβο, ε), στ) 32 νήματα ανά κόμβο}
+    \caption{Barrier overhead στον Parade (ανάθεση νημάτων σε H/W threads).}
+    \label{fig:bo-parade-topothreads}
 \end{figure}
 
-\begin{figure}
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/gcc-places_cores_close.pdf}
-		\texttt{OMP\_PLACES=gcc-cores}
-    \end{minipage}\hfill
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/gcc-places_threads_close.pdf}
-        \texttt{OMP\_PLACES=gcc-threads}
-    \end{minipage}
-    \caption{Barrier overhead στον Parade (GCC places).}
-    \label{fig:bo-parade-gcc-places}
-\end{figure}
+Η χρήση αφηρημένου ονόματος αποφεύχθηκε καθώς ο κάθε μεταφραστής μετασχηματίζει με διαφορετικό τρόπο το αφηρημένο όνομα σε αναγνωριστικά επεξεργαστών. Για παράδειγμα, στην περίπτωση του αφηρημένου ονόματος \texttt{threads}, ο GCC τοποθετεί στο place partition με κυκλικό τρόπο (round-robin) ένα H/W thread ανά κόμβο. Συνεπώς, αν ο χρήστης επιλέξει ως processor binding policy την \texttt{close}, νήματα που θα τοποθετηθούν σε γειτονικά places, θα καταλήξουν σε διαφορετικούς κόμβους NUMA.
 
-\begin{figure}
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/clang-places_cores_close.pdf}
-		\texttt{OMP\_PLACES=clang-cores}
-    \end{minipage}\hfill
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{Figures/epcc_20210823_175412/clang-places_threads_close.pdf}
-        \texttt{OMP\_PLACES=clang-threads}
-    \end{minipage}
-    \caption{Barrier overhead στον Parade (Clang/ICC places).}
-    \label{fig:bo-parade-clang-places}
-\end{figure}
+Στη συνέχεια, ως πολιτική επιλέχθηκε η \texttt{spread} καθώς μπορεί να ισοκατανήμει με αραιό τρόπο τα $T$ νήματα στα $P \geq T$ places, τοποθετώντας ένα νήμα ανά $32 / T_n$ (4, 2 και 1) H/W threads και συνεπώς τοποθετώντας συνολικά 8, 16 και 32 νήματα ανά κόμβο. Στη μεταβλητή \texttt{OMP\_NUM\_THREADS}, όπως και προηγουμένως, ανατέθηκε η τιμή $T$ η οποία αντιστοιχεί στο συνολικό πλήθος των νημάτων και προκύπτει ως $N \times T_n$, με το $T_n$ να αναπαριστά το πλήθος των νημάτων που θέλουμε να χρησιμοποιηθούν σε κάθε κόμβο (8, 16 και 32).
+
+Βάσει του Σχήματος \ref{fig:bo-parade-topothreads} και συγκριτικά με τον προηγούμενο τρόπο ανάθεσης \footnote{Αφηρημένο όνομα \texttt{sockets}.} παρατηρούμε τα ακόλουθα. Ο tree barrier έχει σχεδόν τις ίδιες επιδόσεις, ενώ ο παλιός barrier έχει καλύτερες επιδόσεις για δύο κόμβους και οι οποίες πλησιάζουν εκείνες του tree barrier, όμως για τρεις και τέσσερις κόμβους το overhead αυξάνεται με μεγάλο ρυθμό. Ο GCC επιδεικνύει πολύ μεγαλύτερο overhead για δύο ή περισσότερους κόμβους, γεγονός που τον οδηγεί εκτός συναγωνισμού. Οι ICC και Clang παρουσιάζουν άλλες φορές καλύτερες και άλλες φορές χειρότερες επιδόσεις. Από τα παραπάνω, γίνεται αντιληπτή η επίδραση στο χρόνο εκτέλεσης που μπορεί να έχει ο έλεγχος του τρόπου ανάθεσης των νημάτων σε επεξεργαστές. Τέλος, παρόλο που το φαινόμενο των μεγάλων και απρόσμενων διακυμάνσεων του overhead αμβλύνθηκε σημαντικά, η επιρροή κάποιων μεταφραστών προς το χειρότερο αποτρέπει την περαιτέρω χρήση τόσο περιοριστικών τρόπων ανάθεσης.
 
 
 \subsection{Paragon}
-Στα Σχήματα \ref{fig:bo-paragon-default-places} και \ref{fig:bo-paragon-default-places-ompionly} φαίνονται τα αποτελέσματα των μετρήσεων που πραγματοποιήθηκαν στον Paragon. Επειδή κάθε core διαθέτει μόνο ένα H/W thread, τα abstract names \texttt{threads} και \texttt{cores} έχουν το ίδιο αποτέλεσμα. Εξαίρεση αποτελούν οι ICC και Clang οι οποίοι εσφαλμένα θεωρούν ότι κάθε επεξεργαστής διαθέτει ένα μόνο core αντί για δώδεκα, γεγονός που θεωρήθηκε ως σφάλμα (bug) και αγνοήθηκε.
+Στον Paragon, μετρήθηκε το overhead του barrier κάθε μεταφραστή όταν χρησιμοποιούνται 1 έως 4 κόμβοι και 6 νήματα ανά κόμβο. Όμως, εκτός από το αφηρημένο όνομα \texttt{numa\_domains} ήταν αδύνατο να χρησιμοποιηθεί και το αφηρημένο όνομα \texttt{sockets} για την τοποθέτηση νημάτων σε κόμβους, καθώς κάθε ολοκληρωμένο κύκλωμα επεξεργαστή περιέχει δύο κόμβους και συνεπώς τα δύο αφηρημένα ονόματα δεν είναι ταυτόσημα. Επειδή όμως στο συγκεκριμένο σύστημα όλοι οι μεταφραστές μετασχηματίζουν με τον ίδιο τρόπο τα αφηρημένα ονόματα σε αναγνωριστικά επεξεργαστών\footnote{Οι ICC και Clang εσφαλμένα θεωρούν ότι κάθε επεξεργαστής διαθέτει ένα μόνο core αντί για δώδεκα, γεγονός που θεωρήθηκε ως σφάλμα (bug) και αγνοήθηκε.}, είναι εφικτός ο μονοσήμαντος ορισμός του αρχικού place partition με τη χρήση ρητής λίστας. Συνεπώς, σε αντίθεση με τον Parade, αντί για τoν ορισμό του place partition ως \texttt{sockets($N$)}, όπου $N$ το πλήθος τον κόμβων που χρησιμοποιούνται κάθε φορά (1,2,3 και 4), χρησιμοποιήθηκε ρητή λίστα που περιγράφει $N$ places, με κάθε place να περιέχει τα αναγνωριστικά των επεξεργαστών που ανήκουν στον $N$-οστό κόμβο.
 
-\begin{figure}
+Στο Σχήμα \ref{fig:bo-paragon-toponodes} φαίνονται τα αποτελέσματα των παραπάνω μετρήσεων. Βάσει των μετρήσεων αυτών παρατηρούμε ότι τα overheads των OMPi, GCC και ICC αυξάνουν περίπου γραμμικά και σχεδόν συγκλίνουν για πλήθος τεσσάρων κόμβων. Ο Clang φαίνεται ότι κλιμακώνει καλύτερα για τρεις και τέσσερις κόμβους από τους OMPi, GCC και ICC, αλλά όχι το ίδιο αποδοτικά όπως συνέβαινε στον Parade. Ο OMPi tree barrier επιδεικνύει την καλύτερη επίδοση για τρεις και τέσσερις κόμβους, με το overhead να αυξάνει με πολύ μικρό ρυθμό όσο αυξάνεται το πλήθος των κόμβων, φαινόμενο που παρατηρήθηκε και στον Parade. Επιπλέον, παρατηρούμε ο tree barrier έχει οριακά μεγαλύτερο overhead σε σχέση με τον κλασικό barrier του OMPi, όχι μόνο για ένα κόμβο αλλά και για δύο, κάτι που πιθανώς συμβαίνει λόγω του μικρού πλήθους νημάτων.
+
+Επιπλέον των παραπάνω μετρήσεων στις οποίες τα νήματα που τοποθετούνται σε κάθε κόμβο ανατίθενται στο σύνολο των επεξεργαστών που τον αποτελούν, πραγματοποιήθηκε ανάθεση κάθε νήματος σε συγκεκριμένο H/W thread του κόμβου, παρόλο που δεν παρατηρήθηκαν διακυμάνσεις όπως συνέβη στον Parade. Στο Σχήμα \ref{fig:bo-paragon-topothreads} φαίνονται οι μετρήσεις που έγιναν χρησιμοποιώντας πιο περιοριστικούς τρόπους ανάθεσης και στις οποίες παρατηρούμε ότι η επίδοση των μεταφραστών είναι σε μεγάλο βαθμό ίδια, πλην ελάχιστων μικροδιαφορών, όπως για παράδειγμα το μικρότερο overhead των ICC και Clang για τέσσερις κόμβους,
+ 
+%Στον Paragon, εκτός από το αφηρημένο όνομα \texttt{numa\_domains} ήταν αδύνατο να χρησιμοποιηθεί και το αφηρημένο όνομα \texttt{sockets} για την τοποθέτηση νημάτων σε κόμβους NUMA, καθώς κάθε ολοκληρωμένο κύκλωμα επεξεργαστή περιέχει δύο κόμβους και συνεπώς τα δύο αφηρημένα ονόματα δεν είναι ταυτόσημα. Επιπλέον, όλοι οι μεταφραστές μετασχηματίζουν με τον ίδιο τρόπο τα αφηρημένα ονόματα σε αναγνωριστικά επεξεργαστών\footnote{Οι ICC και Clang εσφαλμένα θεωρούν ότι κάθε επεξεργαστής διαθέτει ένα μόνο core αντί για δώδεκα, γεγονός που θεωρήθηκε ως σφάλμα (bug) και αγνοήθηκε.}, κάτι που επιτρέπει τον μονοσήμαντο ορισμό του place partition ως ρητή λίστα. 
+
+\begin{figure}[htbp]
     \centering
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/paragon_epcc_20210825_132109/default-places_threads_close.pdf}
-		\caption{Barrier overhead στον Paragon.}
-		\label{fig:bo-paragon-default-places}
+        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/toponodes_tpn-6_close.pdf}
     \end{minipage}\hfill
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/paragon_epcc_20210825_132109/ompi_default-places_threads_close.pdf}
-        \caption{Barrier overhead στον Paragon για τους barriers του OMPi.}
-        \label{fig:bo-paragon-default-places-ompionly}
+        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/ompionly_toponodes_tpn-6_close.pdf}
     \end{minipage}
+    \newline \newline
+    {\small Χρησιμοποιήθηκαν 6 νήματα ανά κόμβο.}
+    \caption{Barrier overhead στον Paragon (ανάθεση νημάτων σε κόμβους).}
+    \label{fig:bo-paragon-toponodes}
 \end{figure}
 
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/topothreads_tpn-6_close.pdf}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/ompionly_topothreads_tpn-6_close.pdf}
+    \end{minipage}
+    \newline \newline
+    {\small Χρησιμοποιήθηκαν 6 νήματα ανά κόμβο.}
+    \caption{Barrier overhead στον Paragon (ανάθεση νημάτων σε H/W threads).}
+    \label{fig:bo-paragon-topothreads}
+\end{figure}
 
-%
-%\begin{figure}[t]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{Figures/paragon_epcc_20210825_132109/default-places_threads_close.pdf}
-%	\linebreak
-%	\caption{Barrier overhead στον Paragon: OMP\_PLACES=threads.}
-%	\label{fig:bo-paragon-threads}
-%\end{figure}
-%
-%\begin{figure}[t]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{Figures/paragon_epcc_20210825_132109/ompi_default-places_threads_close.pdf}
-%	\linebreak
-%	\caption{Barrier overhead στον Paragon για τους barriers του OMPi.}
-%	\label{fig:bo-paragon-ompionly}
-%\end{figure}
-
-Από τις μετρήσεις στον Paragon παρατηρούμε ότι τα overheads των OMPi, GCC και ICC αυξάνουν σχεδόν γραμμικά και συγκλίνουν για πλήθος τεσσάρων κόμβων. Ο Clang φαίνεται ότι κλιμακώνει καλύτερα για τρεις και τέσσερις κόμβους από τους OMPi, GCC και ICC, αλλά όχι το ίδιο αποδοτικά όπως συνέβαινε στον Parade. Ο OMPi tree barrier επιδεικνύει την καλύτερη επίδοση για τρεις και τέσσερις κόμβους, με το overhead να αυξάνει με πολύ μικρό ρυθμό όσο αυξάνεται το πλήθος των κόμβων, φαινόμενο που παρατηρήθηκε και στον Parade. Επιπλέον, παρατηρούμε ο tree barrier έχει οριακά μεγαλύτερο overhead σε σχέση με τον κλασικό barrier του OMPi, όχι μόνο για ένα κόμβο αλλά και για δύο. Κάτι τέτοιο πιθανώς συμβαίνει καθώς οι δύο κόμβοι ανήκουν στο ίδιο ενσωματωμένο κύκλωμα επεξεργαστή.
-
-
-%\subsubsection{Σύνοψη συμπερασμάτων}
-%Ο νέος αλγόριθμος tree barrier που υλοποιήθηκε βελτίωσε σημαντικά το κόστος που απαιτεί ο συγχρονισμός των νημάτων όταν χρησιμοποιούνται δύο ή περισσότεροι κόμβοι NUMA, γεγονός που καθιστά εφικτή και αποδοτική την κλιμακωσιμότητα του μεταφραστή OMPi σε συστήματα NUMA πάρα πολλών πυρήνων.
-
+Βάσει των μετρήσεων αυτών παρατηρούμε ότι τα overheads των OMPi, GCC και ICC αυξάνουν περίπου γραμμικά και σχεδόν συγκλίνουν για πλήθος τεσσάρων κόμβων. Ο Clang φαίνεται ότι κλιμακώνει καλύτερα για τρεις και τέσσερις κόμβους από τους OMPi, GCC και ICC, αλλά όχι το ίδιο αποδοτικά όπως συνέβαινε στον Parade. Ο OMPi tree barrier επιδεικνύει την καλύτερη επίδοση για τρεις και τέσσερις κόμβους, με το overhead να αυξάνει με πολύ μικρό ρυθμό όσο αυξάνεται το πλήθος των κόμβων, φαινόμενο που παρατηρήθηκε και στον Parade. Επιπλέον, παρατηρούμε ο tree barrier έχει οριακά μεγαλύτερο overhead σε σχέση με τον κλασικό barrier του OMPi, όχι μόνο για ένα κόμβο αλλά και για δύο, κάτι που πιθανώς συμβαίνει λόγω του μικρού πλήθους νημάτων.
