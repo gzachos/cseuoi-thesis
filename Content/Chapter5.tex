@@ -72,7 +72,7 @@
 
 
 \subsection{Parade}
-Στα Σχήματα \ref{fig:bo-parade-sockets} α), γ) και ε) φαίνεται το overhead του barrier κάθε μεταφραστή όταν χρησιμοποιούνται 1 έως 4 κόμβοι, ενώ το πλήθος των νημάτων ανά κόμβο κυμαίνεται σε 8, 16 και 32. Για την καλύτερη σύγκριση μεταξύ του κλασικού barrier του OMPi και του νέου barrier, τα Σχήματα \ref{fig:bo-parade-sockets} β), δ) και στ)    περιέχουν τις γραφικές παραστάσεις μόνο των δύο αυτών υλοποιήσεων.
+Στα Σχήματα \ref{fig:bo-parade-sockets} α), γ) και ε) φαίνεται το overhead του κλασικού barrier του OMPi σε αντιπαραβολή με αυτό του νέου barrier όταν χρησιμοποιούνται 1 έως 4 κόμβοι, ενώ το πλήθος των νημάτων ανά κόμβο κυμαίνεται σε 8, 16 και 32. Επιπλέον, στα Σχήματα \ref{fig:bo-parade-sockets} β), δ) και στ) έχουν προστεθεί οι γραφικές παραστάσεις του overhead των μεταφραστών GCC, ICC και Clang.
 
 Επειδή στις συγκεκριμένες εκδόσεις των μεταφραστών μόνο οι OMPi και ICC υποστηρίζουν το αφηρημένο όνομα \texttt{numa\_domains}, για την ανάθεση των νημάτων σε επεξεργαστές και συνεπώς σε κόμβους χρησιμοποιήθηκε το αφηρημένο όνομα \texttt{sockets} το οποίο στην περίπτωση του Parade είναι ταυτόσημο με το όνομα \texttt{numa\_domains}. Πιο συγκεκριμένα, στις μεταβλητές περιβάλλοντος του OpenMP ανατέθηκαν οι εξής τιμές: \texttt{OMP\_PLACES="sockets($N$)"}, \texttt{OMP\_NUM\_THREADS="$T$"} και \texttt{OMP\_PROC\_BIND="close"}, όπου $N$ το πλήθος των sockets/κόμβων που χρησιμοποιούνται κάθε φορά (1, 2, 3 και 4) και $T$ το συνολικό πλήθος των νημάτων που προκύπτει ως $N \times T_n$, με το $T_n$ να αναπαριστά το πλήθος των νημάτων που θέλουμε να χρησιμοποιηθούν σε κάθε κόμβο (8, 16 και 32). Η πολιτική \texttt{close} χρησιμοποιήθηκε για την ισοκατανομή των $T$ νημάτων στους $N$ κόμβους, δηλαδή για την ανάθεση $T_n = T/N$ νημάτων ανά κόμβο. Με αυτό τον τρόπο, ανατίθενται $T_n$ νήματα σε κάθε κόμβο, χωρίς όμως να γνωρίζουμε ακριβώς σε ποιούς επεξεργαστές του κόμβου θα ανατεθούν τα $T_n$ νήματα, καθώς η ακριβής τοποθέτηση των νημάτων εξαρτάται από τη βιβλιοθήκη νημάτων που χρησιμοποιεί η κάθε υλοποίηση και πιθανώςc και από το λειτουργικό σύστημα.
 
@@ -82,34 +82,34 @@
     \centering
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/sockets_tpn-8_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_sockets_tpn-8_close.pdf}
 		α)
     \end{minipage}\hfill
      \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_sockets_tpn-8_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/sockets_tpn-8_close.pdf}
 		β)
     \end{minipage}
     \newline
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/sockets_tpn-16_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_sockets_tpn-16_close.pdf}
         γ)
     \end{minipage}\hfill
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_sockets_tpn-16_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/sockets_tpn-16_close.pdf}
         δ)
     \end{minipage}
     \newline
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/sockets_tpn-32_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_sockets_tpn-32_close.pdf}
         ε)
     \end{minipage}\hfill
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_sockets_tpn-32_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/sockets_tpn-32_close.pdf}
         στ)
     \end{minipage}
     \newline \newline
@@ -126,34 +126,34 @@
     \centering
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/topothreads_tpn-8_spread.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_topothreads_tpn-8_spread.pdf}
 		α)
     \end{minipage}\hfill
      \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_topothreads_tpn-8_spread.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/topothreads_tpn-8_spread.pdf}
 		β)
     \end{minipage}
     \newline
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/topothreads_tpn-16_spread.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_topothreads_tpn-16_spread.pdf}
         γ)
     \end{minipage}\hfill
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_topothreads_tpn-16_spread.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/topothreads_tpn-16_spread.pdf}
         δ)
     \end{minipage}
     \newline
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/topothreads_tpn-32_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_topothreads_tpn-32_close.pdf}
         ε)
     \end{minipage}\hfill
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/parade-epcc/ompionly_topothreads_tpn-32_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/parade-epcc/topothreads_tpn-32_close.pdf}
         στ)
     \end{minipage}
     \newline \newline
@@ -166,9 +166,9 @@
 
 Στη συνέχεια, ως πολιτική επιλέχθηκε η \texttt{spread} καθώς μπορεί να ισοκατανήμει με αραιό τρόπο τα $T$ νήματα στα $P \geq T$ places, τοποθετώντας ένα νήμα ανά $32 / T_n$ (4, 2 και 1) H/W threads και συνεπώς τοποθετώντας συνολικά 8, 16 και 32 νήματα ανά κόμβο. Στη μεταβλητή \texttt{OMP\_NUM\_THREADS}, όπως και προηγουμένως, ανατέθηκε η τιμή $T$ η οποία αντιστοιχεί στο συνολικό πλήθος των νημάτων και προκύπτει ως $N \times T_n$, με το $T_n$ να αναπαριστά το πλήθος των νημάτων που θέλουμε να χρησιμοποιηθούν σε κάθε κόμβο (8, 16 και 32).
 
-Βάσει του Σχήματος \ref{fig:bo-parade-topothreads} και συγκριτικά με τον προηγούμενο τρόπο ανάθεσης\footnote{Αφηρημένο όνομα \texttt{sockets}.} παρατηρούμε τα ακόλουθα. Ο tree barrier έχει σχεδόν τις ίδιες επιδόσεις, ενώ ο παλιός barrier έχει καλύτερες επιδόσεις για δύο κόμβους και οι οποίες πλησιάζουν εκείνες του tree barrier, όμως για τρεις και τέσσερις κόμβους το overhead αυξάνεται με μεγάλο ρυθμό. Ο GCC επιδεικνύει πολύ μεγαλύτερο overhead για δύο ή περισσότερους κόμβους, γεγονός που τον οδηγεί εκτός συναγωνισμού. Οι ICC και Clang παρουσιάζουν άλλες φορές καλύτερες και άλλες φορές χειρότερες επιδόσεις. Από τα παραπάνω, γίνεται αντιληπτή η επίδραση στο χρόνο εκτέλεσης που μπορεί να έχει ο έλεγχος του τρόπου ανάθεσης των νημάτων σε επεξεργαστές. Τέλος, παρόλο που το φαινόμενο των μεγάλων και απρόσμενων διακυμάνσεων του overhead αμβλύνθηκε σημαντικά, η επιρροή κάποιων μεταφραστών προς το χειρότερο αποτρέπει την περαιτέρω χρήση τόσο περιοριστικών τρόπων ανάθεσης.
+Βάσει του Σχήματος \ref{fig:bo-parade-topothreads} και συγκριτικά με τον προηγούμενο τρόπο ανάθεσης\footnote{Αφηρημένο όνομα \texttt{sockets}.} παρατηρούμε τα ακόλουθα. Ο tree barrier έχει σχεδόν τις ίδιες επιδόσεις, ενώ ο παλιός barrier έχει καλύτερες επιδόσεις για δύο κόμβους και πλησιάζουν εκείνες του tree barrier, όμως για τρεις και τέσσερις κόμβους το overhead αυξάνεται με μεγάλο ρυθμό. Ο GCC επιδεικνύει πολύ μεγαλύτερο overhead για δύο ή περισσότερους κόμβους, γεγονός που τον οδηγεί εκτός συναγωνισμού. Οι ICC και Clang παρουσιάζουν άλλες φορές καλύτερες και άλλες φορές χειρότερες επιδόσεις. Από τα παραπάνω, γίνεται αντιληπτή η επίδραση στο χρόνο εκτέλεσης που μπορεί να έχει ο έλεγχος του τρόπου ανάθεσης των νημάτων σε επεξεργαστές. Τέλος, παρόλο που το φαινόμενο των μεγάλων και απρόσμενων διακυμάνσεων του overhead αμβλύνθηκε σημαντικά, η επιρροή κάποιων μεταφραστών προς το χειρότερο αποτρέπει την περαιτέρω χρήση τόσο περιοριστικών τρόπων ανάθεσης.
 
-Από το σύνολο των παραπάνω παρατηρήσεων συμπεραίνουμε ότι ο tree barrier διατηρεί τον μικρό ρυθμό αύξησης του overhead για δύο ή περισσότερους κόμβους, ανεξάρτητα από τον τρόπο ανάθεσης των νημάτων σε επεξεργαστές. Αυτή η συμπεριφορά μπορεί να παρατηρηθείν μόνο στον Clang, με εξαίρεση την περίπτωση που χρησιμοποιούνται 8 νήματα ανά κόμβο, κατά την οποία ο Clang εμφανίζει μεγαλύτερο ρυθμό αύξησης κατά τη μετάβαση από τους τρεις στους τέσσερις κόμβους. Επιπλέον, καθώς ο ρυθμός αύξησης μεταξύ δύο ή περισσότερων κόμβων παραμένει μικρός, η συνολική επίδοση του tree barrier καθορίζεται από το overhead το οποίο εισάγεται κατά τη μετάβαση από έναν κόμβο σε δύο.
+Από το σύνολο των παραπάνω παρατηρήσεων συμπεραίνουμε ότι ο tree barrier διατηρεί τον μικρό ρυθμό αύξησης του overhead για δύο ή περισσότερους κόμβους, ανεξάρτητα από τον τρόπο ανάθεσης των νημάτων σε επεξεργαστές. Αυτή η συμπεριφορά μπορεί να παρατηρηθεί μόνο στον Clang, με εξαίρεση την περίπτωση που χρησιμοποιούνται 8 νήματα ανά κόμβο, κατά την οποία ο Clang εμφανίζει μεγαλύτερο ρυθμό αύξησης κατά τη μετάβαση από τους τρεις στους τέσσερις κόμβους.
 
 \subsection{Paragon}
 Στον Paragon, μετρήθηκε το overhead του barrier κάθε μεταφραστή όταν χρησιμοποιούνται 1 έως 4 κόμβοι και 6 νήματα ανά κόμβο, με ανάλογο τρόπο με αυτόν που χρησιμοποιήθηκε στον Parade. Η μόνη διαφοροποίηση αφορούσε τον ορισμό του place partition μέσω της μεταβλητής περιβάλλοντος \texttt{OMP\_PLACES}. Πιο συγκεκριμένα, εκτός από το αφηρημένο όνομα \texttt{numa\_domains} ήταν αδύνατο να χρησιμοποιηθεί και το αφηρημένο όνομα \texttt{sockets} για την τοποθέτηση νημάτων σε κόμβους, καθώς κάθε ολοκληρωμένο κύκλωμα επεξεργαστή περιέχει δύο κόμβους και συνεπώς τα δύο αφηρημένα ονόματα δεν είναι ταυτόσημα. Επειδή όμως στο συγκεκριμένο σύστημα όλοι οι μεταφραστές μετασχηματίζουν με τον ίδιο τρόπο τα αφηρημένα ονόματα σε αναγνωριστικά επεξεργαστών\footnote{Οι ICC και Clang εσφαλμένα θεωρούν ότι κάθε επεξεργαστής διαθέτει ένα μόνο core αντί για δώδεκα, γεγονός που θεωρήθηκε ως σφάλμα (bug) και αγνοήθηκε.}, είναι εφικτός ο μονοσήμαντος ορισμός του αρχικού place partition με τη χρήση ρητής λίστας. Συνεπώς, σε αντίθεση με τον Parade, αντί για τoν ορισμό του place partition ως \texttt{sockets($N$)}, όπου $N$ το πλήθος τον κόμβων που χρησιμοποιούνται κάθε φορά (1,2,3 και 4), χρησιμοποιήθηκε ρητή λίστα που περιγράφει $N$ places, με κάθε place να περιέχει τα αναγνωριστικά των επεξεργαστών που ανήκουν στον $N$-οστό κόμβο.
@@ -183,11 +183,11 @@
     \centering
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/toponodes_tpn-6_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/ompionly_toponodes_tpn-6_close.pdf}
     \end{minipage}\hfill
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/ompionly_toponodes_tpn-6_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/toponodes_tpn-6_close.pdf}
     \end{minipage}
     \newline \newline
     {\small Χρησιμοποιήθηκαν 6 νήματα ανά κόμβο.}
@@ -199,11 +199,11 @@
     \centering
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/topothreads_tpn-6_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/ompionly_topothreads_tpn-6_close.pdf}
     \end{minipage}\hfill
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/ompionly_topothreads_tpn-6_close.pdf}
+        \includegraphics[width=1\textwidth]{Figures/paragon-epcc/topothreads_tpn-6_close.pdf}
     \end{minipage}
     \newline \newline
     {\small Χρησιμοποιήθηκαν 6 νήματα ανά κόμβο.}
