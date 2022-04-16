@@ -33,5 +33,5 @@ on large NUMA systems.
 This text was based on this [unofficial XeLaTeX template for Diploma theses](https://github.com/gzachos/thesis-template-uoi).
 
 
-## Thesis Text 
+## Thesis Text (in Greek)
  - [Hosted on paragroup.cse.uoi.gr](https://paragroup.cse.uoi.gr/publications/files/187zachos2021.pdf)
