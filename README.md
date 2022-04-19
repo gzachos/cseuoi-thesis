@@ -29,9 +29,12 @@ synchronization functions, specifically barriers, were redesigned to function ef
 on large NUMA systems.
 
 
+## Thesis Text (in Greek)
+ - [Hosted on _paragroup.cse.uoi.gr_](https://paragroup.cse.uoi.gr/publications/files/187zachos2021.pdf)
+ - [Hosted on _gzachos.com_](https://gzachos.com/shared-files/gzachos-thesis.pdf)
+
+
 ## Modification Notes
 This text was based on this [unofficial XeLaTeX template for Diploma theses](https://github.com/gzachos/thesis-template-uoi).
 
 
-## Thesis Text (in Greek)
- - [Hosted on paragroup.cse.uoi.gr](https://paragroup.cse.uoi.gr/publications/files/187zachos2021.pdf)
