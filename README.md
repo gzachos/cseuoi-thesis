@@ -1,4 +1,4 @@
-# cseuoi-thesis
+# diploma-thesis-uoi
 
 Repository for my thesis authored in partial fulfillment of the requirements for the Diploma of Engineering degree at the [Department of Computer Science and Engineering](https://www.cse.uoi.gr),
 [School of Engineering](https://engineering.uoi.gr/), [University of Ioannina](https://www.uoi.gr/). 
