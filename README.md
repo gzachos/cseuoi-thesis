@@ -30,8 +30,7 @@ on large NUMA systems.
 
 
 ## Thesis Text (in Greek)
- - [Hosted on _paragroup.cse.uoi.gr_](https://paragroup.cse.uoi.gr/publications/files/187zachos2021.pdf)
- - [Hosted on _gzachos.com_](https://gzachos.com/shared-files/gzachos-thesis.pdf)
+[DOI: 10.13140/RG.2.2.21191.16807](https://dx.doi.org/10.13140/RG.2.2.21191.16807) (Hosted on ResearchGate)
 
 
 ## Modification Notes
